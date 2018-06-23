@@ -45,12 +45,12 @@ msg: Could not find the requested service mongod: host
 RUNNING HANDLER [apache_config : Restart apache] *******************************
 
 RUNNING HANDLER [restart postfix] **********************************************
-        to retry, use: --limit @/root/src/xForge/web-languageforge/deploy/playbook_xenial.retry
+        to retry, use: --limit @/home/app/src/xForge/web-languageforge/deploy/playbook_xenial.retry
 
 PLAY RECAP *********************************************************************
-localhost                  : ok=62   changed=50   unreachable=0    failed=1 
+localhost                  : ok=62   changed=50   unreachable=0    failed=1   
 
-ERROR: Service 'forge' failed to build: The command '/bin/sh -c ansible-playbook playbook_xenial.yml --limit localhost' returned a non-zero code: 2
+ERROR: Service 'forge' failed to build: The command '/bin/sh -c ansible-playbook playbook_xenial.yml --limit localhost -K' returned a non-zero code: 2
 ```
 
 # TODO

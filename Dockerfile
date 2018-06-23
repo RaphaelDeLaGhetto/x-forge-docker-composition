@@ -6,7 +6,7 @@ EXPOSE 80
   
 RUN apt-get update
 RUN apt-get -y upgrade
-RUN apt-get -y install software-properties-common git npm default-jre-headless apt-transport-https
+RUN apt-get -y install software-properties-common git npm default-jre-headless apt-transport-https sudo
 
 # For Mongo
 RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 2930ADAE8CAF5059EE73BB4B58712A2291FA4AD5
@@ -17,23 +17,24 @@ RUN apt-get update
 RUN apt-get -y install ansible 
 
 # The Ubuntu image does not create a default user
-#RUN useradd -m app
-#USER app
+RUN adduser --disabled-password --gecos '' app
+RUN adduser app sudo
+RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 
-RUN mkdir -p /root/src/xForge
-WORKDIR /root/src/xForge
+USER app
+
+RUN mkdir -p /home/app/src/xForge
+WORKDIR /home/app/src/xForge
 RUN git clone https://github.com/sillsdev/web-languageforge web-languageforge --recurse-submodules
 RUN ln -s web-languageforge web-scriptureforge
 
-WORKDIR /root/src/xForge/web-languageforge/deploy
-#RUN ansible-playbook -i hosts playbook_create_config.yml --limit localhost -K
-RUN ansible-playbook -i hosts playbook_create_config.yml --limit localhost
+WORKDIR /home/app/src/xForge/web-languageforge/deploy
+RUN ansible-playbook -i hosts playbook_create_config.yml --limit localhost -K
 
 #
 # Broken
 #
-#RUN ansible-playbook playbook_xenial.yml --limit localhost -K
-RUN ansible-playbook playbook_xenial.yml --limit localhost
+RUN ansible-playbook playbook_xenial.yml --limit localhost -K
 
 #WORKDIR ..
 #RUN ./refreshDeps.sh
