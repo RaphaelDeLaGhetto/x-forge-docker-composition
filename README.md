@@ -34,28 +34,23 @@ docker-compose exec forge bash
 This is as far as I get:
 
 ```
-Step 20/21 : RUN ansible-playbook playbook_xenial.yml --limit localhost -K
- ---> Running in a7a08e46d28d
-/usr/lib/python2.7/getpass.py:83: GetPassWarning: Can not control echo on the terminal.
-  passwd = fallback_getpass(prompt, stream)
-Warning: Password input may be echoed.
-SUDO password: [DEPRECATION WARNING]: 'include' for playbook includes. You should use 
-'import_playbook' instead. This feature will be removed in version 2.8. 
-Deprecation warnings can be disabled by setting deprecation_warnings=False in 
-ansible.cfg.
+TASK [update the mongo config file] ********************************************
+ok: [localhost]
 
-PLAY [Linux Xenial local webserver] ********************************************
+TASK [ensure mongod service is running (and enable it at boot)] ****************
+fatal: [localhost]: FAILED! => {"changed": false, "msg": "Could not find the requested service mongod: host"}
 
-TASK [Gathering Facts] *********************************************************
-fatal: [localhost]: FAILED! => {"changed": false, "module_stderr": "/bin/sh: 1: sudo: not found\n", "module_stdout": "", "msg": "MODULE FAILURE", "rc": 127}
+msg: Could not find the requested service mongod: host
 
-msg: MODULE FAILURE
-        to retry, use: --limit @/home/app/src/xForge/web-languageforge/deploy/playbook_xenial.retry
+RUNNING HANDLER [apache_config : Restart apache] *******************************
+
+RUNNING HANDLER [restart postfix] **********************************************
+        to retry, use: --limit @/root/src/xForge/web-languageforge/deploy/playbook_xenial.retry
 
 PLAY RECAP *********************************************************************
-localhost                  : ok=0    changed=0    unreachable=0    failed=1   
+localhost                  : ok=62   changed=50   unreachable=0    failed=1 
 
-ERROR: Service 'forge' failed to build: The command '/bin/sh -c ansible-playbook playbook_xenial.yml --limit localhost -K' returned a non-zero code: 2
+ERROR: Service 'forge' failed to build: The command '/bin/sh -c ansible-playbook playbook_xenial.yml --limit localhost' returned a non-zero code: 2
 ```
 
 # TODO
